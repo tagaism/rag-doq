@@ -7,7 +7,7 @@ from openai import chat
 
 load_dotenv()
 
-persistent_directory = "data/chrome_db"
+persistent_directory = "data/chroma_db"
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 db = Chroma(persist_directory=persistent_directory, embedding_function=embeddings)
 
@@ -84,6 +84,3 @@ def start_chat():
 
 if __name__ == "__main__":
     start_chat()
-
-
-
