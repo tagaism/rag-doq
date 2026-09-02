@@ -1,0 +1,37 @@
+import enum
+from langchain_experimental.text_splitter import SemanticChunker
+from langchain_openai import OpenAIEmbeddings
+from dotenv import load_dotenv
+
+load_dotenv()
+
+sample_text = """Tesla's Q3 Results
+Tesla reported record revenue of $25.2B in Q3 2024.
+The company exceeded analyst expetations by 15%.
+Revenue growth was driven by strong vehicle deliveries.
+
+Model Y Performance
+The Model Y becoame the best-selling vehicle globally, with 350,000 units sold.
+Customer satisfaction ratings reached an all-time high of 96%.
+Model Y now represents 60% of Tesla's total vehicle sales.
+
+Production Challenges
+SUpply chain issues caused a 12% increase in production costs.
+Tesla is working to diversify its supplier base.
+New manufacturing techniques are being implemented to reduce consts."""
+
+# Semantic chunker - groups by meaning, not structure
+semantic_splitter = SemanticChunker(
+    embeddings=OpenAIEmbeddings(),
+    breakpoint_threshold_type="percentile", # or standart_deviation
+    breakpoint_threshold_amount=70
+)
+
+chunks = semantic_splitter.split_text(sample_text)
+
+print("SEMANTIC CHUNKING RESULTS:")
+print("=" * 50)
+for i, chunk in enumerate(chunks,1):
+    print(f"Chunk {i}: ({len(chunk)} chars)")
+    print(f'"{chunk}"')
+    print()
